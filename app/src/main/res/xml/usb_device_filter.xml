@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Vendor-ID 0x1D57 = 7511 (dezimal), Product-IDs:
+    0xFA55 = 64085  -> Kabelbetrieb
+    0xFA60 = 64096  -> Funk-Dongle (2,4 GHz)
+-->
+<resources>
+    <usb-device vendor-id="7511" product-id="64085" />
+    <usb-device vendor-id="7511" product-id="64096" />
+</resources>

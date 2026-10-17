@@ -1,0 +1,42 @@
+name: Build APK
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: JDK 17 installieren
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Android SDK einrichten
+        uses: android-actions/setup-android@v3
+
+      - name: Gradle-Wrapper erzeugen (JAR fehlt im Repo)
+        run: gradle wrapper --gradle-version 8.7
+
+      - name: Debug-APK bauen
+        run: ./gradlew assembleDebug --no-daemon
+
+      - name: APK als Artefakt hochladen
+        uses: actions/upload-artifact@v4
+        with:
+          name: attackshark-x11-control-debug-apk
+          path: app/build/outputs/apk/debug/app-debug.apk
+
+      - name: Als Release veröffentlichen (einfacher Download am Handy)
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: build-${{ github.run_number }}
+          files: app/build/outputs/apk/debug/app-debug.apk
