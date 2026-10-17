@@ -20,6 +20,12 @@ jobs:
           distribution: temurin
           java-version: '17'
 
+      - name: Android cmdline-tools zum PATH hinzufuegen
+        run: |
+          echo "ANDROID_HOME=/usr/local/lib/android/sdk" >> $GITHUB_ENV
+          echo "/usr/local/lib/android/sdk/cmdline-tools/latest/bin" >> $GITHUB_PATH
+          echo "/usr/local/lib/android/sdk/platform-tools" >> $GITHUB_PATH
+
       - name: Android-SDK-Lizenzen akzeptieren
         continue-on-error: true
         run: yes | sdkmanager --licenses
