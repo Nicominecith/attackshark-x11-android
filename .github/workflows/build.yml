@@ -20,8 +20,11 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - name: Android SDK einrichten
-        uses: android-actions/setup-android@v3
+      - name: Android-SDK-Lizenzen akzeptieren
+        run: yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses || true
+
+      - name: Benoetigte SDK-Pakete sicherstellen
+        run: "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-34" "build-tools;34.0.0"
 
       - name: Gradle-Wrapper erzeugen (JAR fehlt im Repo)
         run: gradle wrapper --gradle-version 8.7
@@ -35,7 +38,7 @@ jobs:
           name: attackshark-x11-control-debug-apk
           path: app/build/outputs/apk/debug/app-debug.apk
 
-      - name: Als Release veröffentlichen (einfacher Download am Handy)
+      - name: Als Release veroeffentlichen (einfacher Download am Handy)
         uses: softprops/action-gh-release@v2
         with:
           tag_name: build-${{ github.run_number }}
